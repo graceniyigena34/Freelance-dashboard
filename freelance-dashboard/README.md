@@ -83,4 +83,7 @@ Open a Pull Request
 
 ![alt text](image.png) this is the image of payments
 
+<!-- dashboard screenshoot  -->
+![alt text](<Screenshot 2025-11-05 164759.png>)
+
 The link deployed is : https://freelance-dashboard-git-main-niyigena-marie-graces-projects.vercel.app/
