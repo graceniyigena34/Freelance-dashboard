@@ -86,4 +86,8 @@ Open a Pull Request
 <!-- dashboard screenshoot  -->
 ![alt text](<Screenshot 2025-11-05 164759.png>)
 
+
+<!--  Clients-->
+![alt text](<Screenshot 2025-11-05 164748.png>)
+
 The link deployed is : https://freelance-dashboard-git-main-niyigena-marie-graces-projects.vercel.app/
