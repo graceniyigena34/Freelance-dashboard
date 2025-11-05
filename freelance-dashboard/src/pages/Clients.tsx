@@ -25,7 +25,7 @@ export const ClientsPage: React.FC = () => {
       email: email.trim() || undefined,
     };
 
-    dispatch({ types: "ADD_CLIENT", payload: { client } });
+    dispatch({ type: "ADD_CLIENT", payload: client });
 
     setName("");
     setCountry("");
@@ -56,7 +56,7 @@ export const ClientsPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Add Client Form */}
+  
       <div className="bg-white shadow-md rounded-xl p-6">
         <h3 className="font-semibold text-lg mb-4">Add Client</h3>
         <form

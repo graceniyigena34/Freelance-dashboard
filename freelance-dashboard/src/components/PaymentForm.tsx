@@ -23,8 +23,7 @@ export const PaymentForm: React.FC = () => {
       date,
     };
 
-    dispatch({ type: "ADD_PAYMENT", payload: { payment } });
-
+   dispatch({ type: "ADD_PAYMENT", payload: payment });
     // reset form
     setProjectId("");
     setAmount("");

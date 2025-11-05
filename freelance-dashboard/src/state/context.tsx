@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext, ReactNode } from "react";
-import { Client, Project, Payment } from "../types";
+import { Client, Project, Payment, ProjectStatus, PaymentStatus } from "../types";
 
 // ------------------- Types -------------------
 interface AppState {
@@ -9,8 +9,9 @@ interface AppState {
 }
 
 type Action =
+  | { type: "ADD_CLIENT"; payload: Client } // <-- added client support
   | { type: "ADD_PROJECT"; payload: Project }
-  | { type: "ADD_PAYMENT"; payload: { payment: Payment } }
+  | { type: "ADD_PAYMENT"; payload: Payment }
   | { type: "MARK_PROJECT_PAID"; payload: { projectId: string } };
 
 // ------------------- Initial State -------------------
@@ -23,12 +24,18 @@ const initialState: AppState = {
 // ------------------- Reducer -------------------
 const appReducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
+    case "ADD_CLIENT":
+      return { ...state, clients: [...state.clients, action.payload] };
+
     case "ADD_PROJECT":
       return { ...state, projects: [...state.projects, action.payload] };
+
     case "ADD_PAYMENT": {
-      const { payment } = action.payload;
+      const payment = action.payload;
       const updatedProjects = state.projects.map((p) =>
-        p.id === payment.projectId ? { ...p, paymentStatus: "paid" } : p
+        p.id === payment.projectId
+          ? { ...p, paymentStatus: "paid" as PaymentStatus }
+          : p
       );
       return {
         ...state,
@@ -36,12 +43,16 @@ const appReducer = (state: AppState, action: Action): AppState => {
         payments: [...state.payments, payment],
       };
     }
+
     case "MARK_PROJECT_PAID": {
       const updatedProjects = state.projects.map((p) =>
-        p.id === action.payload.projectId ? { ...p, paymentStatus: "paid" } : p
+        p.id === action.payload.projectId
+          ? { ...p, paymentStatus: "paid" as PaymentStatus }
+          : p
       );
       return { ...state, projects: updatedProjects };
     }
+
     default:
       return state;
   }
@@ -82,3 +93,4 @@ export const useAppDispatch = () => {
   }
   return context;
 };
+
