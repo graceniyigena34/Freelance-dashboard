@@ -1,75 +1,83 @@
-# React + TypeScript + Vite
+<!-- Freelance Dashboard -->
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive and modern dashboard application for managing clients, projects, and payments. Built with React, Vite, Tailwind CSS, and TypeScript, it features dark mode and global state management using the Context API.
 
-Currently, two official plugins are available:
+ <!-- Features -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Client Management: Add, view, and track client information (name, email, country).
 
-## React Compiler
+Project Management: Create projects, manage budgets, and mark projects as paid.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Payment Tracking: Record and view payments associated with projects.
 
-Note: This will impact Vite dev & build performances.
+Dark Mode: Toggle between light and dark themes seamlessly.
 
-## Expanding the ESLint configuration
+Responsive Design: Works smoothly on mobile, tablet, and desktop.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Global State Management: Uses React Context API with useReducer for app-wide state.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<!-- Tech Stack -->
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Frontend: React + TypeScript + Vite
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Styling: Tailwind CSS
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Routing: React Router DOM
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+State Management: React Context API + useReducer
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+<!-- Project Structure -->
+
+The freelance-dashboard project is organized to separate components, pages, state management, and type definitions. Inside the src folder, the components directory contains reusable UI components like Navbar.tsx, ClientCard.tsx, and PaymentForm.tsx. The pages directory includes the main application pages: Home.tsx, Dashboard.tsx, Clients.tsx, and Payments.tsx. The state directory handles application state with context.tsx for managing clients, projects, and payments, and ThemeContext.tsx for dark/light theme support. TypeScript types are defined in the types directory inside index.ts. The main application files, App.tsx and main.tsx, sit directly in src. At the root of the project, there is index.html as the HTML template, package.json for dependencies and scripts, tailwind.config.js for Tailwind configuration, and vite.config.ts for Vite configuration.
+
+⚡ Installation
+
+Clone the repository:
+
+git clone https://github.com/yourusername/freelance-dashboard.git
+cd freelance-dashboard
+
+
+Install dependencies:
+
+npm install
+
+
+Start the development server:
+
+npm run dev
+
+
+Open in browser:
+https://freelance-dashboard-git-main-niyigena-marie-graces-projects.vercel.app/
+
+<!-- Usage -->
+
+Navigate between Home, Dashboard, Clients, and Payments via the navbar.
+
+Add Clients: Use the Clients page to create and manage client profiles.
+
+Manage Projects & Payments: Use the Dashboard and Payments pages to handle projects and record payments.
+
+Dark Mode: Toggle the theme using the button in the navbar.
+
+<!-- Available Scripts  -->
+Command	Description
+npm run dev	Start development server
+npm run build	Build app for production
+npm run preview	Preview the production build locally
+
+
+
+
+/** Contributing
+
+Create a branch: git checkout -b feature/YourFeature
+
+Commit your changes: git commit -m "Add some feature"
+
+Push to branch: git push origin feature/YourFeature
+
+Open a Pull Request
+
+The link deployed is : https://freelance-dashboard-git-main-niyigena-marie-graces-projects.vercel.app/
