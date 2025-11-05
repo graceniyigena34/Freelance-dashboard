@@ -1,71 +1,44 @@
-import React, { useState } from "react";
-import { useAppState } from "../state/context";
-import { ClientCard } from "../components/ClientCard";
-import { ProjectList } from "../components/ProjectList";
-import { DashboardStats } from "../components/DashboardStatus";
-import { recordPayment } from "../utils";
+import React, { useState } from 'react'
+import { useAppState } from '../state/context'
+import { DashboardStats } from '../components/DashboardStatus'
+import { ProjectList } from '../components/ProjectList'
+import { ProjectForm } from '../components/Projectform'
+import { ClientCard } from '../components/ClientCard'
 
 
 export const DashboardPage: React.FC = () => {
-const { state, dispatch } = useAppState();
-const [search, setSearch] = useState("");
-
-
-const projects = state.projects;
-
-
-function addPaymentExample() {
-// Example of recording a new payment with validation
-const payment = { projectId: "p1", amount: 1500, date: new Date().toISOString() };
-const result = recordPayment(state, payment);
-if (!result.ok) {
-alert(result.message);
-return;
-}
-dispatch({ type: "ADD_PAYMENT", payload: { payment } });
-}
+const { state } = useAppState()
+const [projectQuery, setProjectQuery] = useState('')
+const projects = state.projects.filter((p) => p.title.toLowerCase().includes(projectQuery.toLowerCase()))
 
 
 return (
-<div style={{ padding: 20 }}>
-<h1>Freelance Management Dashboard</h1>
+<div className="max-w-7xl mx-auto p-6">
 <DashboardStats />
-
-
-<div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 20 }}>
-<div>
-<h2>Clients</h2>
-<input placeholder="Search clients" value={search} onChange={(e) => setSearch(e.target.value)} />
-<div style={{ marginTop: 12 }}>
-{state.clients
-.filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
-.map((c) => (
-<ClientCard client={c} key={c.id} />
-))}
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div className="lg:col-span-1 space-y-4">
+<div className="card">
+<h3 className="font-semibold mb-2">Quick Clients</h3>
+<div className="space-y-3">
+{state.clients.slice(0,3).map(c => <ClientCard key={c.id} client={c} />)}
 </div>
 </div>
 
 
-<div>
-<h2>Projects</h2>
+<ProjectForm />
+</div>
+
+
+<div className="lg:col-span-2">
+<div className="flex items-center justify-between mb-4">
+<h2 className="text-lg font-semibold">Projects</h2>
+<input className="border rounded px-2 py-1" placeholder="Search projects" value={projectQuery} onChange={(e)=> setProjectQuery(e.target.value)} />
+</div>
+
+
 <ProjectList projects={projects} />
-
-
-<h3 style={{ marginTop: 20 }}>Payments</h3>
-<ul>
-{state.payments.map((p, i) => (
-<li key={i}>
-{p.projectId} — {p.amount} — {new Date(p.date).toISOString()}
-</li>
-))}
-</ul>
-
-
-<div style={{ marginTop: 12 }}>
-<button onClick={addPaymentExample}>Record Payment for p1 (example)</button>
 </div>
 </div>
 </div>
-</div>
-);
-};
+)
+}

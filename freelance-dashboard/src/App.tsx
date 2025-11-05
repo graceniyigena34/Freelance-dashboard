@@ -1,27 +1,31 @@
-import React from "react";
-import { AppProvider } from "./state/context";
-import { DashboardPage } from "./pages/Dashboard";
+import React from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { AppProvider } from './state/context'
+import { Navbar } from './components/Navbar'
+import { Home } from './pages/Home'
+import { DashboardPage } from './pages/Dashboard'
+import { ClientsPage } from './pages/Clients'
+import { PaymentsPage } from './pages/Payments'
 
 
 const App: React.FC = () => {
 return (
 <AppProvider>
-<div style={{ display: "flex", height: "100vh", fontFamily: "Arial, sans-serif" }}>
-<aside style={{ width: 220, background: "#2c3e50", color: "#fff", padding: 20 }}>
-<h2>Freelance Dashboard</h2>
-<nav>
-<div style={{ margin: "12px 0" }}>Home</div>
-<div style={{ margin: "12px 0" }}>Projects</div>
-<div style={{ margin: "12px 0" }}>Payments</div>
-</nav>
-</aside>
-<main style={{ flex: 1, overflow: "auto" }}>
-<DashboardPage />
+<div className="min-h-screen flex flex-col">
+<Navbar />
+<main className="flex-1 py-6">
+<Routes>
+<Route path="/" element={<Home />} />
+<Route path="/dashboard" element={<DashboardPage />} />
+<Route path="/clients" element={<ClientsPage />} />
+<Route path="/payments" element={<PaymentsPage />} />
+<Route path="*" element={<Navigate to="/" replace />} />
+</Routes>
 </main>
 </div>
 </AppProvider>
-);
-};
+)
+}
 
 
-export default App;
+export default App

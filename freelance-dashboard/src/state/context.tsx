@@ -1,68 +1,84 @@
-import React, { createContext, useContext, useReducer, ReactNode } from "react";
-import { AppState, Client, Project, Payment } from "../types";
-import { Action } from "./actions";
+import React, { createContext, useReducer, useContext, ReactNode } from "react";
+import { Client, Project, Payment } from "../types";
 
+// ------------------- Types -------------------
+interface AppState {
+  clients: Client[];
+  projects: Project[];
+  payments: Payment[];
+}
 
+type Action =
+  | { type: "ADD_PROJECT"; payload: Project }
+  | { type: "ADD_PAYMENT"; payload: { payment: Payment } }
+  | { type: "MARK_PROJECT_PAID"; payload: { projectId: string } };
+
+// ------------------- Initial State -------------------
 const initialState: AppState = {
-clients: [
-{ id: "c1", name: "Acme Co.", country: "Rwanda", email: "hello@acme.com" },
-{ id: "c2", name: "Beta LLC", country: "Kenya" },
-],
-projects: [
-{ id: "p1", clientId: "c1", title: "Website Redesign", budget: 1500, status: "in-progress", paymentStatus: "unpaid" },
-{ id: "p2", clientId: "c2", title: "Mobile App", budget: 3000, status: "pending", paymentStatus: "paid" },
-],
-payments: [
-{ projectId: "p2", amount: 3000, date: new Date().toISOString() },
-],
+  clients: [],
+  projects: [],
+  payments: [],
 };
 
+// ------------------- Reducer -------------------
+const appReducer = (state: AppState, action: Action): AppState => {
+  switch (action.type) {
+    case "ADD_PROJECT":
+      return { ...state, projects: [...state.projects, action.payload] };
+    case "ADD_PAYMENT": {
+      const { payment } = action.payload;
+      const updatedProjects = state.projects.map((p) =>
+        p.id === payment.projectId ? { ...p, paymentStatus: "paid" } : p
+      );
+      return {
+        ...state,
+        projects: updatedProjects,
+        payments: [...state.payments, payment],
+      };
+    }
+    case "MARK_PROJECT_PAID": {
+      const updatedProjects = state.projects.map((p) =>
+        p.id === action.payload.projectId ? { ...p, paymentStatus: "paid" } : p
+      );
+      return { ...state, projects: updatedProjects };
+    }
+    default:
+      return state;
+  }
+};
 
-function reducer(state: AppState, action: Action): AppState {
-switch (action.type) {
-case "ADD_PAYMENT": {
-const { payment } = action.payload;
-// Mark related project as paid (type-safe)
-const projects = state.projects.map((proj) =>
-proj.id === payment.projectId ? { ...proj, paymentStatus: "paid" as const } : proj
+// ------------------- Context -------------------
+const AppStateContext = createContext<AppState | undefined>(undefined);
+const AppDispatchContext = createContext<React.Dispatch<Action> | undefined>(
+  undefined
 );
 
-
-return { ...state, payments: [...state.payments, payment], projects };
-}
-case "MARK_PROJECT_PAID": {
-const { projectId } = action.payload;
-const projects = state.projects.map((p) => (p.id === projectId ? { ...p, paymentStatus: "paid" } : p));
-return { ...state, projects };
-}
-case "ADD_CLIENT": {
-return { ...state, clients: [...state.clients, action.payload.client] };
-}
-case "ADD_PROJECT": {
-return { ...state, projects: [...state.projects, action.payload.project] };
-}
-case "UPDATE_PROJECT_STATUS": {
-const { projectId, status } = action.payload;
-const projects = state.projects.map((p) => (p.id === projectId ? { ...p, status } : p));
-return { ...state, projects };
-}
-default:
-return state;
-}
-}
-
-
-const StateContext = createContext<{ state: AppState; dispatch: React.Dispatch<Action> } | undefined>(undefined);
-
-
+// ------------------- Provider -------------------
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-const [state, dispatch] = useReducer(reducer, initialState);
-return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;
+  const [state, dispatch] = useReducer(appReducer, initialState);
+
+  return (
+    <AppStateContext.Provider value={state}>
+      <AppDispatchContext.Provider value={dispatch}>
+        {children}
+      </AppDispatchContext.Provider>
+    </AppStateContext.Provider>
+  );
 };
 
+// ------------------- Custom Hooks -------------------
+export const useAppState = () => {
+  const context = useContext(AppStateContext);
+  if (!context) {
+    throw new Error("useAppState must be used within AppProvider");
+  }
+  return { state: context };
+};
 
-export function useAppState() {
-const ctx = useContext(StateContext);
-if (!ctx) throw new Error("useAppState must be used within AppProvider");
-return ctx;
-}
+export const useAppDispatch = () => {
+  const context = useContext(AppDispatchContext);
+  if (!context) {
+    throw new Error("useAppDispatch must be used within AppProvider");
+  }
+  return context;
+};

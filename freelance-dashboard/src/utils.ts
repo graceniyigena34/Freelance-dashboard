@@ -1,40 +1,6 @@
-import { AppState, Client, Payment, Project } from "./types";
-
-
-export function countPaidUnpaid(projects: Project[]) {
-const paid = projects.filter((p) => p.paymentStatus === "paid").length;
-const unpaid = projects.length - paid;
-return { paid, unpaid };
-}
-
-
-export function findClientById(state: AppState, id?: string): Client | undefined {
-if (!id) return undefined;
-return state.clients.find((c) => c.id === id);
-}
-
-
-export function recordPayment(state: AppState, payment: Payment): { ok: boolean; message?: string } {
-// Validate project exists
-const project = state.projects.find((p) => p.id === payment.projectId);
-if (!project) return { ok: false, message: "Project not found" };
-if (payment.amount <= 0) return { ok: false, message: "Amount must be positive" };
-// date validation: ensure ISO-ish
-if (Number.isNaN(Date.parse(payment.date))) return { ok: false, message: "Invalid date" };
-return { ok: true };
-}
-
-
-export function filterProjects(projects: Project[], opts?: { status?: Project["status"]; payment?: Project["paymentStatus"] }) {
-return projects.filter((p) => {
-if (opts?.status && p.status !== opts.status) return false;
-if (opts?.payment && p.paymentStatus !== opts.payment) return false;
-return true;
-});
-}
-
-
-export function searchByName<T extends { name?: string; title?: string }>(items: T[], q: string) {
-const low = q.trim().toLowerCase();
-return items.filter((it) => (it.name ?? it.title ?? "").toLowerCase().includes(low));
-}
+import { AppState, Client, Payment, Project } from './types'
+export function countPaidUnpaid(projects: Project[]) { const paid = projects.filter((p) => p.paymentStatus === 'paid').length; const unpaid = projects.length - paid; return { paid, unpaid } }
+export function findClientById(state: AppState, id?: string): Client | undefined { if (!id) return undefined; return state.clients.find((c) => c.id === id) }
+export function recordPayment(state: AppState, payment: Payment): { ok: boolean; message?: string } { const project = state.projects.find((p) => p.id === payment.projectId); if (!project) return { ok: false, message: 'Project not found' }; if (payment.amount <= 0) return { ok: false, message: 'Amount must be positive' }; if (Number.isNaN(Date.parse(payment.date))) return { ok: false, message: 'Invalid date' }; return { ok: true } }
+export function filterProjects(projects: Project[], opts?: { status?: Project['status']; payment?: Project['paymentStatus'] }) { return projects.filter((p) => { if (opts?.status && p.status !== opts.status) return false; if (opts?.payment && p.paymentStatus !== opts.payment) return false; return true }) }
+export function searchByName<T extends { name?: string; title?: string }>(items: T[], q: string) { const low = q.trim().toLowerCase(); return items.filter((it) => (it.name ?? it.title ?? '').toLowerCase().includes(low)) }
