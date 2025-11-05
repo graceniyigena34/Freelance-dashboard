@@ -80,4 +80,7 @@ Push to branch: git push origin feature/YourFeature
 
 Open a Pull Request
 
+
+![alt text](image.png) this is the image of payments
+
 The link deployed is : https://freelance-dashboard-git-main-niyigena-marie-graces-projects.vercel.app/
