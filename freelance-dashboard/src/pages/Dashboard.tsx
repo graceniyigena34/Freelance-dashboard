@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAppState } from "../state/context";
 import { ClientCard } from "../components/ClientCard";
 import { ProjectList } from "../components/ProjectList";
-import { DashboardStats } from "../components/DashboardStats";
+import { DashboardStats } from "../components/DashboardStatus";
 import { recordPayment } from "../utils";
 
 

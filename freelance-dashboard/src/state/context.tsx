@@ -56,4 +56,13 @@ const StateContext = createContext<{ state: AppState; dispatch: React.Dispatch<A
 
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const [state, dispatch] = useReducer(reducer, initialState);
+return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;
+};
+
+
+export function useAppState() {
+const ctx = useContext(StateContext);
+if (!ctx) throw new Error("useAppState must be used within AppProvider");
+return ctx;
 }
