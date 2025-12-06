@@ -1,4 +1,4 @@
-The link deployed : https://freelance-dashboard-git-main-niyigena-marie-graces-projects.vercel.app/
+The link deployed : https://freelance-dashboard-plum.vercel.app
 
 
 Freelance Dashboard
